@@ -8,4 +8,5 @@
 #define ASSETS_DIR "../assets"
 #define IMG_DIR ASSETS_DIR "/img"
 
-#endif //OPENCV_BASE_CONFIG_H
+
+#endif //CONFIG_H
