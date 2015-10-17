@@ -71,6 +71,24 @@ public:
 
         return mesh;
     }
+
+    static Mesh triangle(Vec a, Vec b, Vec c) {
+        Mesh mesh;
+        Mesh::VertexHandle vhandle[3];
+
+        vhandle[0] = mesh.add_vertex(a);
+        vhandle[1] = mesh.add_vertex(b);
+        vhandle[2] = mesh.add_vertex(c);
+
+        std::vector<Mesh::VertexHandle> face_vhandles;
+
+        face_vhandles.clear();
+        face_vhandles.push_back(vhandle[0]);
+        face_vhandles.push_back(vhandle[1]);
+        face_vhandles.push_back(vhandle[2]);
+        mesh.add_face(face_vhandles);
+
+    }
 };
 
 #endif //SYMMETRY_DETECTION_MESH_FACTORY_H

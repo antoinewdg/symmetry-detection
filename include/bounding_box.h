@@ -15,25 +15,27 @@ public:
 
     BoundingBox(const Mesh &mesh);
 
+    BoundingBox(Vec minBoundaires, Vec maxBoundaries);
+
 
 private:
     void evaluateBoundaries(const Mesh &mesh);
 
 
 private:
-    Point minBoundaries, maxBoundaries;
-    Point center;
+    Vec minBoundaries, maxBoundaries;
+    Vec center;
 
 public:
-    const Point &getMinBoundaries() const {
+    const Vec &getMinBoundaries() const {
         return minBoundaries;
     }
 
-    const Point &getMaxBoundaries() const {
+    const Vec &getMaxBoundaries() const {
         return maxBoundaries;
     }
 
-    const Point &getCenter() const {
+    const Vec &getCenter() const {
         return center;
     }
 };

@@ -2,13 +2,13 @@
 #include <cmath>
 #include "common/common.h"
 #include "spherical_coordinate_system.h"
-#include "test_util/mesh_factory.h"
+#include "mesh_factory.h"
 
 TEST(SphericalCoordinateSystem, CorrectlyCenterMeshVertices) {
     Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
     SphericalCoordinateSystem::centerMeshVertices(mesh);
 
-    Point P1(-.5, -0.5, -0.5), P2(0.5, 0.5, 0.5);
+    Vec P1(-.5, -0.5, -0.5), P2(0.5, 0.5, 0.5);
     bool hasP1 = false, hasP2 = false;
     for (Mesh::VertexIter it = mesh.vertices_begin(); it != mesh.vertices_end(); it++) {
 

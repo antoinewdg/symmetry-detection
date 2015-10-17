@@ -9,8 +9,7 @@
 
 
 typedef OpenMesh::PolyMesh_ArrayKernelT<> Mesh;
-typedef Mesh::Point Point;
-
+typedef OpenMesh::Vec3f Vec;
 
 
 #endif //SYMMETRY_DETECTION_MESH_H

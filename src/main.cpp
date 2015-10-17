@@ -5,7 +5,7 @@
 #include "common/common.h"
 #include "bounding_box.h"
 #include "spherical_coordinate_system.h"
-
+#include "gedt/octree.h"
 
 using std::array;
 
@@ -25,6 +25,8 @@ int main() {
         std::cerr << "write error\n";
         exit(1);
     }
+
+    Node n(std::make_shared<Mesh>(mesh), d);
 //    for (Mesh::VertexIter it = mesh.vertices_begin(); it != mesh.vertices_end(); it++) {
 //        p = mesh.point(*it);
 //        for (Mesh::VertexIter jt = mesh.vertices_begin(); jt != mesh.vertices_end(); jt++) {
