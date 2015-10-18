@@ -5,6 +5,7 @@
 #ifndef SYMMETRY_DETECTION_TRIANGLE_BOX_H
 #define SYMMETRY_DETECTION_TRIANGLE_BOX_H
 
+#include <cmath>
 #include <array>
 #include <vector>
 #include <limits>
@@ -143,6 +144,104 @@ public:
         }
     }
 
+    static bool faceSphereIntersection(const vector<Vec> &face, const Vec &center, double radius) {
+
+//        vector<Vec> edges = edgesFromPoints(face);
+        Vec n = normalFromPoints(face);
+        Vec H = projectPointOnPlane(center, n, face[0]);
+
+        double d2 = (H - center).sqrnorm(), r2 = radius * radius;
+        if (d2 > r2) {
+            return false;
+        }
+
+        double t = coplanarPointToFaceDistance(H, face, n);
+        return t * t <= r2 - d2;
+
+
+    }
+
+    static Vec projectPointOnPlane(const Vec &p, const Vec &planeNormal, const Vec &planePoint) {
+        Vec v = ((p - planePoint) | planeNormal) * planeNormal;
+        return p - v;
+    }
+
+    static double pointToSegmentDistance(const Vec &p, const Vec &a, const Vec &b) {
+        Vec u = (b - a).normalize();
+
+        double t = (p - a) | u, pmb = (p - a).sqrnorm() - t * t;
+        if (t <= 0) {
+            return (p - a).norm();
+        }
+        if (t >= (b - a).norm()) {
+            return (p - b).norm();
+        }
+
+
+        return std::sqrt((p - a).sqrnorm() - t * t);
+    }
+
+    static double coplanarPointToFaceDistance(const Vec &p, const vector<Vec> &points, const Vec &normal) {
+        if (isCoplanarPointInsideFace(p, points, normal)) {
+            return 0;
+        }
+
+        double min = std::numeric_limits<double>::max(), d;
+        for (int i = 0; i < points.size(); i++) {
+            d = pointToSegmentDistance(p, points[(i + 1) % points.size()], points[i]);
+            if (d < min) {
+                min = d;
+            }
+        }
+        return min;
+    }
+
+    static double coplanarPointToFaceDistance(const Vec &p, const vector<Vec> &points) {
+        return coplanarPointToFaceDistance(p, points, normalFromPoints(points));
+    }
+
+    static bool isCoplanarPointInsideFace(const Vec &p, const vector<Vec> &points, const Vec &normal) {
+        vector<double> nProducts(points.size());
+        for (int i = 0; i < points.size(); i++) {
+            nProducts[i] = ((p - points[i]) % (points[(i + 1) % points.size()] - points[i])) | normal;
+        }
+
+        int s = sign(nProducts[0]);
+        for (int i = 1; i < nProducts.size(); i++) {
+            if (sign(nProducts[i]) != s) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static bool isCoplanarPointInsideFace(const Vec &p, const vector<Vec> &points) {
+        return isCoplanarPointInsideFace(p, points, normalFromPoints(points));
+    }
+
+
+private:
+    static vector<Vec> edgesFromPoints(const vector<Vec> points) {
+        vector<Vec> edges(points.size());
+        for (int i = 0; i < edges.size(); i++) {
+            edges[i] = points[(i + 1) % edges.size()] - points[i];
+        }
+        return edges;
+    }
+
+
+    static Vec normalFromPoints(const vector<Vec> &points) {
+        Vec v(0, 0, 0);
+        for (int i = 0; v == Vec(0, 0, 0) && i < points.size() - 1; i++) {
+            v = (points[(i + 2) % points.size()] - points[i + 1]) % (points[i + 1] - points[i]);
+        }
+        return v.normalize();
+    }
+
+    static int sign(double d) {
+        return (d > 0) - (d < 0);
+    }
 
 };
 
