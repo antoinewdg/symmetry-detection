@@ -10,6 +10,13 @@
 
 typedef OpenMesh::PolyMesh_ArrayKernelT<> Mesh;
 typedef OpenMesh::Vec3f Vec;
+typedef OpenMesh::Vec3i Vec3i;
+
+inline void displayFace(Mesh &mesh, Mesh::FaceHandle f) {
+    for (Mesh::FaceVertexIter it = mesh.fv_iter(f); it.is_valid(); it++) {
+        std::cout << mesh.point(*it) << " - ";
+    }
+}
 
 
 #endif //SYMMETRY_DETECTION_MESH_H

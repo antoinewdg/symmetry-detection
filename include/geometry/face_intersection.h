@@ -151,6 +151,7 @@ public:
         Vec H = projectPointOnPlane(center, n, face[0]);
 
         double d2 = (H - center).sqrnorm(), r2 = radius * radius;
+//        std::cout << std::endl << "distance: " << d2 << " radius: " << r2;
         if (d2 > r2) {
             return false;
         }
