@@ -16,7 +16,6 @@ public:
 
     SphericalCoordinateSystem(Mesh &mesh);
 
-    static void centerMeshVertices(Mesh &mesh);
 
 private:
     float radius;

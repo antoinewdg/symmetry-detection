@@ -42,6 +42,7 @@ public:
         return subdivisions;
     }
 
+    static void centerMeshVertices(Mesh &mesh);
 
 private:
     void evaluateBoundaries(const Mesh &mesh);

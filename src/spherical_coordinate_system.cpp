@@ -7,17 +7,11 @@ SphericalCoordinateSystem::SphericalCoordinateSystem() {
 }
 
 SphericalCoordinateSystem::SphericalCoordinateSystem(Mesh &mesh) : SphericalCoordinateSystem() {
-    centerMeshVertices(mesh);
+    BoundingBox::centerMeshVertices(mesh);
     BoundingBox bb(mesh);
     setRadius(bb.getMaxBoundaries().norm());
 
 }
 
-void SphericalCoordinateSystem::centerMeshVertices(Mesh &mesh) {
-    BoundingBox bb(mesh);
-    for (Mesh::VertexIter it = mesh.vertices_begin(); it != mesh.vertices_end(); it++) {
-        mesh.point(*it) = mesh.point(*it) - bb.getCenter();
-    }
 
-}
 

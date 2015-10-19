@@ -44,3 +44,25 @@ TEST(BoundingBox, subdivide) {
     ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 1, 1), subdivisions[7].getMaxBoundaries()));
 
 }
+
+TEST(BoundingBox, correctlyCenterMeshVertices) {
+    Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
+    BoundingBox::centerMeshVertices(mesh);
+
+    Vec P1(-.5, -0.5, -0.5), P2(0.5, 0.5, 0.5);
+    bool hasP1 = false, hasP2 = false;
+    for (Mesh::VertexIter it = mesh.vertices_begin(); it != mesh.vertices_end(); it++) {
+
+        if (mesh.point(*it) == P1) {
+            hasP1 = true;
+        }
+        if (mesh.point(*it) == P2) {
+            hasP2 = true;
+        }
+    }
+
+    ASSERT_TRUE(hasP1);
+    ASSERT_TRUE(hasP2);
+
+
+}
