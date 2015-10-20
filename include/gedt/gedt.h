@@ -38,12 +38,6 @@ private:
     OCTree *tree;
     list<Vec3i> seeds;
 
-//    void setValue(const Vec3i &c, double v) {
-////        std::cout << "setting value " << v << "at " << c << " aka " <<
-////        c[0] * tree->getGridSize2() + c[1] * tree->getGridSize() + c[2] << std::endl;
-//        values[c[0] * tree->getGridSize2() + c[1] * tree->getGridSize() + c[2]] = v;
-////        std::cout << "value is now : " << getValue(c) << std::endl << std::endl;
-//    }
 
     static Vec3i immediateNeighbor(int i) {
         return Vec3i((i < 2) * (2 * i - 1), (i >= 2) * (i < 4) * (2 * i - 5), (i >= 4) * (2 * i - 9));

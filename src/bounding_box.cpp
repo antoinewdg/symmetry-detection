@@ -32,6 +32,10 @@ void BoundingBox::evaluateBoundaries(const Mesh &mesh) {
         }
     }
 
+    Vec delta = (1.0 / 10) * (maxBoundaries - minBoundaries);
+    minBoundaries -= delta;
+    maxBoundaries += delta;
+
     center = 0.5f * (minBoundaries + maxBoundaries);
 
 }

@@ -12,15 +12,15 @@ GEDT::GEDT(Mesh &mesh, int treeDepth) : mesh(mesh), boundingBox(mesh) {
     }
 
 
-//    image = cv::Mat::zeros(tree->getGridSize(), tree->getGridSize(), CV_32F);
-//    for (int x = 0; x < tree->getGridSize(); x++) {
-//        for (int y = 0; y < tree->getGridSize(); y++) {
-//            image.at<float>(image.rows - y - 1, x) = (*values)(x, y, tree->getGridSize() / 2);
-//
-//
-//        }
-//    }
-//
+    image = cv::Mat::zeros(tree->getGridSize(), tree->getGridSize(), CV_32F);
+    for (int x = 0; x < tree->getGridSize(); x++) {
+        for (int y = 0; y < tree->getGridSize(); y++) {
+            image.at<float>(image.rows - y - 1, x) = (*values)(x, y, tree->getGridSize() / 2);
+
+
+        }
+    }
+
 //    std::cout << image;
 //    cv::imshow("dd", image);
 //
