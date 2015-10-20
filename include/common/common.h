@@ -11,5 +11,6 @@
 #include "common/config.h"
 
 #define GRID_SIZE 64
+#define OCTREE_DEPTH 6
 
 #endif //SYMMETRY_DETECTION_COMMON_H_H

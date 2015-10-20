@@ -5,9 +5,10 @@
 #ifndef SYMMETRY_DETECTION_REPARTITION_H
 #define SYMMETRY_DETECTION_REPARTITION_H
 
-
+#include <vector>
 #include "common/common.h"
 
+using std::vector;
 
 class BoundingBox {
 
@@ -15,28 +16,61 @@ public:
 
     BoundingBox(const Mesh &mesh);
 
+    BoundingBox(Vec minBoundaires, Vec maxBoundaries);
+
+    vector<BoundingBox> subdivisions() const {
+        vector<BoundingBox> subdivisions;
+        Vec delta;
+        subdivisions.push_back(BoundingBox(minBoundaries, center));
+//        std::cout << "min : " << subdivisions[0].getMinBoundaries() << " max: " <<
+//        subdivisions[0].getMaxBoundaries() << std::endl;
+        for (int i = 0; i < 3; i++) {
+            delta = Vec(0, 0, 0);
+            delta[i] = center[i] - minBoundaries[i];
+            subdivisions.push_back(BoundingBox(minBoundaries + delta, center + delta));
+//            std::cout << "min : " << subdivisions[i + 1].getMinBoundaries() << " max: " <<
+//            subdivisions[i + 1].getMaxBoundaries() << std::endl;
+        }
+        for (int i = 0; i < 3; i++) {
+            delta = Vec(0, 0, 0);
+            delta[(i + 1) % 3] = center[(i + 1) % 3] - minBoundaries[(i + 1) % 3];
+            delta[(i + 2) % 3] = center[(i + 2) % 3] - minBoundaries[(i + 2) % 3];
+            subdivisions.push_back(BoundingBox(minBoundaries + delta, center + delta));
+        }
+        subdivisions.push_back(BoundingBox(center, maxBoundaries));
+
+        return subdivisions;
+    }
+
+    static void centerMeshVertices(Mesh &mesh);
 
 private:
     void evaluateBoundaries(const Mesh &mesh);
 
 
 private:
-    Point minBoundaries, maxBoundaries;
-    Point center;
+    Vec minBoundaries, maxBoundaries;
+    Vec center;
 
 public:
-    const Point &getMinBoundaries() const {
+    const Vec &getMinBoundaries() const {
         return minBoundaries;
     }
 
-    const Point &getMaxBoundaries() const {
+    const Vec &getMaxBoundaries() const {
         return maxBoundaries;
     }
 
-    const Point &getCenter() const {
+    const Vec &getCenter() const {
         return center;
     }
 };
 
+inline std::ostream &operator<<(std::ostream &out, const BoundingBox &bb) {
+    out << "[" << bb.getMinBoundaries() <<
+    " - " << bb.getCenter() <<
+    " - " << bb.getMaxBoundaries() << "]";
+    return out;
+}
 
 #endif //SYMMETRY_DETECTION_REPARTITION_H
