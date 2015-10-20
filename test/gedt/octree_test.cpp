@@ -64,3 +64,11 @@ TEST(OCTree, Contruction) {
     }
 
 }
+
+
+TEST(OCTree, handlesLargeDepth) {
+    Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
+    list<Mesh::FaceHandle> faces;
+    std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
+    OCTree tree(mesh, BoundingBox(Vec(-0.01, -0.01, -0.01), Vec(1.01, 1.01, 1.01)), faces, 6);
+}

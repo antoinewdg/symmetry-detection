@@ -54,12 +54,18 @@ public:
 
     virtual ~OCTree();
 
-    Vec3i gridCoordsFromPoint(Vec p) const {
+    Vec3i gridCoordsFromPoint(const Vec &p) const {
         Vec3i r;
-        p = (p - boundingBox.getMinBoundaries()) * gridSize;
+        Vec c(p);
+//        std::cout << c << " - " << p << std::endl;
+//        c = gridSize * (c - boundingBox.getMinBoundaries());
         for (int i = 0; i < 3; i++) {
-            p[i] /= boundingBox.getMaxBoundaries()[i];
-            r[i] = int(std::floor(p[i]));
+            c[i] = (gridSize / (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i])) *
+                   (c[i] - boundingBox.getMinBoundaries()[i]);
+            r[i] = int(std::floor(c[i]));
+            if (r[i] >= gridSize) {
+                std::cout << "Error for float " << p[i] << std::endl;
+            }
         }
 
         return r;
@@ -72,6 +78,7 @@ private:
     vector<int> voxelValues;
 
     inline void setVoxelValue(const Vec3i &c, int v) {
+//        std::cout << "setting voexl value : " << c << std::endl;
         voxelValues[c[0] * gridSize2 + c[1] * gridSize + c[2]] = v;
     }
 
@@ -93,7 +100,14 @@ public:
         return getVoxelValue(gridCoordsFromPoint(p));
     }
 
+    inline int getGridSize() const {
+        return gridSize;
+    }
 
+
+    inline int getGridSize2() const {
+        return gridSize2;
+    }
 };
 
 

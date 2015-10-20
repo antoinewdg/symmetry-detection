@@ -2,8 +2,8 @@
 
 
 SphericalCoordinateSystem::SphericalCoordinateSystem() {
-    phiStep = float(M_PI / (2 * GRID_SIZE));
-    thetaStep = float(2 * M_PI / GRID_SIZE);
+    phiStep = M_PI / (2 * GRID_SIZE);
+    thetaStep = 2 * M_PI / GRID_SIZE;
 }
 
 SphericalCoordinateSystem::SphericalCoordinateSystem(Mesh &mesh) : SphericalCoordinateSystem() {

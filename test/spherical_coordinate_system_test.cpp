@@ -9,7 +9,7 @@ TEST(SphericalCoordinateSystem, ConstructorFitsMesh) {
     Mesh mesh = MeshFactory::basicCube(-1, -1, -1, 1, 1, 1);
     SphericalCoordinateSystem s(mesh);
 
-    ASSERT_FLOAT_EQ(s.getRadius(), std::sqrt(3.0));
+    ASSERT_DOUBLE_EQ(s.getRadius(), std::sqrt(3.0));
 
 
 }

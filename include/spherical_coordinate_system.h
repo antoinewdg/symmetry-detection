@@ -18,30 +18,30 @@ public:
 
 
 private:
-    float radius;
-    float rStep, thetaStep, phiStep;
+    double radius;
+    double rStep, thetaStep, phiStep;
 
 
 public:
-    void setRadius(float radius) {
+    void setRadius(double radius) {
         SphericalCoordinateSystem::radius = radius;
         rStep = 2 * radius / GRID_SIZE;
     }
 
 
-    float getRadius() const {
+    double getRadius() const {
         return radius;
     }
 
-    float getRStep() const {
+    double getRStep() const {
         return rStep;
     }
 
-    float getThetaStep() const {
+    double getThetaStep() const {
         return thetaStep;
     }
 
-    float getPhiStep() const {
+    double getPhiStep() const {
         return phiStep;
     }
 };

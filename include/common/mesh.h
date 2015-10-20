@@ -7,9 +7,12 @@
 
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 
+struct Traits : OpenMesh::DefaultTraits {
+    typedef OpenMesh::Vec3d Point;
+};
 
-typedef OpenMesh::PolyMesh_ArrayKernelT<> Mesh;
-typedef OpenMesh::Vec3f Vec;
+typedef OpenMesh::PolyMesh_ArrayKernelT<Traits> Mesh;
+typedef OpenMesh::Vec3d Vec;
 typedef OpenMesh::Vec3i Vec3i;
 
 inline void displayFace(Mesh &mesh, Mesh::FaceHandle f) {

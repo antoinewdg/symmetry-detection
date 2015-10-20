@@ -6,6 +6,7 @@ OCTree::OCTree(Mesh &mesh, const BoundingBox &boundingBox, const list<Mesh::Face
     gridSize = std::pow(2, maxDepth);
     gridSize2 = gridSize * gridSize;
     voxelValues = vector<int>(gridSize * gridSize * gridSize);
+//    std::cout << gridSize;
     root = new Node(this, mesh, boundingBox, potentialFaces, maxDepth);
 }
 
@@ -62,7 +63,7 @@ OCTree::Node::~Node() {
 }
 
 bool OCTree::Node::boxContainsFace(Mesh::FHandle f, const BoundingBox &bb) {
-    float r = (bb.getMaxBoundaries() - bb.getCenter()).norm();
+    double r = (bb.getMaxBoundaries() - bb.getCenter()).norm();
     vector<Vec> points;
     for (Mesh::FaceVertexIter it = mesh.fv_iter(f); it.is_valid(); it++) {
         points.push_back(mesh.point(*it));

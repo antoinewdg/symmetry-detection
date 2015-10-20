@@ -9,7 +9,7 @@
 
 class MeshFactory {
 public:
-    static Mesh basicCube(float u, float v, float w, float x, float y, float z) {
+    static Mesh basicCube(double u, double v, double w, double x, double y, double z) {
         Mesh mesh;
         Mesh::VertexHandle vhandle[8];
 
