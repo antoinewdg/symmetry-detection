@@ -14,13 +14,14 @@
 #include "octree.h"
 #include "util/tensor.h"
 
-#define SIGMA2 1.44269504089
+#define GEDT_SIGMA2 4.4814201
+#define GEDT_MAXD 4
 
 
 class GEDT {
     typedef std::pair<Vec3i, Vec3i> Pair;
 public:
-    GEDT(Mesh &mesh);
+    GEDT(Mesh &mesh, int treeDepth);
 
     virtual ~GEDT();
 
@@ -35,6 +36,7 @@ private:
     Tensor *values;
     cv::Mat image;
     OCTree *tree;
+    list<Vec3i> seeds;
 
 //    void setValue(const Vec3i &c, double v) {
 ////        std::cout << "setting value " << v << "at " << c << " aka " <<
@@ -48,6 +50,8 @@ private:
     }
 
     void regionGrowth(const Vec3i &c, const Vec3i &seed, double maxD2, double sigma2);
+
+    void initializeSeeds();
 
     bool areCoordsInGrid(Vec3i c) {
         return c[0] >= 0 && c[0] < tree->getGridSize() &&

@@ -27,7 +27,7 @@ int main() {
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
 
-    GEDT gedt(mesh);
+    GEDT gedt(mesh, OCTREE_DEPTH);
 //    OCTree tree(mesh, d, faces, 7);
 //    int r = 128;
 //    for (int x = 0; x < r; x++) {
