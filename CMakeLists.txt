@@ -17,10 +17,10 @@ add_executable(main src/main.cpp ${source_files} ${header_files})
 
 enable_testing()
 find_package(GTest)
-file(GLOB_RECURSE test_files test/*.cpp test/*.h)
-add_executable(testing ${source_files} ${header_files} ${test_files})
 
 if (GTEST_FOUND)
+    file(GLOB_RECURSE test_files test/*.cpp test/*.h)
+    add_executable(testing ${source_files} ${header_files} ${test_files})
     include_directories(${GTEST_INCLUDE_DIRS})
     target_link_libraries(testing ${GTEST_LIBRARIES} pthread)
 else()
@@ -32,14 +32,22 @@ endif ()
 # OpenMesh
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(OpenMesh REQUIRED)
-
-#if (OPENMESH_FOUND)
-target_link_libraries(main ${OPENMESH_LIBRARIES})
-target_link_libraries(testing ${OPENMESH_LIBRARIES})
 include_directories(${OPENMESH_INCLUDE_DIRS})
-#else()
-#    message(WARNING "Found OpenMesh in ${OPENMESH_INCLUDE_DIRS};${OPENMESH_LIBRARIES}")
-#endif ()
+set(PROJECT_LIBS ${PROJECT_LIBS} ${OPENMESH_LIBRARIES})
+
+# OpenCV
+set(OpenCV_STATIC OFF)
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+set(PROJECT_LIBS ${PROJECT_LIBS} ${OpenCV_LIBS})
+
+
+# Linking ======
+target_link_libraries(main ${PROJECT_LIBS})
+if (GTEST_FOUND)
+    target_link_libraries(testing ${PROJECT_LIBS})
+endif ()
+
 
 
 
