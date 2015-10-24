@@ -37,24 +37,23 @@ public:
         return (*this)(c[0], c[1], c[2]);
     }
 
-    static Tensor createGaussianKernel(int halfwidth, double sigma2) {
-        Tensor kernel(2 * halfwidth + 1, 2 * halfwidth + 1, 2 * halfwidth + 1);
-        for (int u = -halfwidth; u <= halfwidth; u++) {
-            for (int v = -halfwidth; v <= halfwidth; v++) {
-                for (int w = -halfwidth; w <= halfwidth; w++) {
-                    kernel(u + halfwidth, v + halfwidth, w + halfwidth) = std::exp(
-                            -(u * u + v * v + w * w) / sigma2
-                    );
-                }
-            }
-        }
-
-        return kernel;
+    Vec3i coordsFromIndex(int i) const {
+        Vec3i c;
+        c[2] = i % zSize;
+        i /= zSize;
+        c[1] = i % ySize;
+        c[0] = i / ySize;
+        return c;
     }
 
 private:
     vector<double> data;
     int xSize, ySize, zSize;
+
+public:
+    const vector<double> &getData() const {
+        return data;
+    }
 };
 
 #endif //SYMMETRY_DETECTION_TENSOR_H

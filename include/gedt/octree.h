@@ -60,12 +60,23 @@ public:
 //        std::cout << c << " - " << p << std::endl;
 //        c = gridSize * (c - boundingBox.getMinBoundaries());
         for (int i = 0; i < 3; i++) {
-            c[i] = (gridSize / (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i])) *
+            c[i] = (double(gridSize) / (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i])) *
                    (c[i] - boundingBox.getMinBoundaries()[i]);
             r[i] = int(std::floor(c[i]));
             if (r[i] >= gridSize) {
                 std::cout << "Error for float " << p[i] << std::endl;
             }
+        }
+
+        return r;
+    }
+
+    Vec voxelCenterFromCoords(const Vec3i &c) const {
+        Vec r;
+
+        for (int i = 0; i < 3; i++) {
+            double ratio = (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i]) / gridSize;
+            r[i] = boundingBox.getMinBoundaries()[i] + ratio * (0.5 + c[i]);
         }
 
         return r;

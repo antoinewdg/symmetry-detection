@@ -7,15 +7,19 @@
 using std::array;
 
 
-TEST(OCTree, gridCoordsFromPoint) {
-    Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
+TEST(OCTree, gridCoordsToPointConversion) {
+    Mesh mesh = MeshFactory::basicCube(-1, 0, 0, 3, 1, 1);
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-    OCTree tree(mesh, BoundingBox(Vec(0, 0, 0), Vec(1, 1, 1)), faces, 2);
+    OCTree tree(mesh, BoundingBox(Vec(-1, 0, 0), Vec(3, 1, 1)), faces, 2);
 
-    ASSERT_EQ(Vec3i(3, 3, 3), tree.gridCoordsFromPoint(Vec(0.875, 0.875, 0.875)));
-    ASSERT_EQ(Vec3i(0, 0, 0), tree.gridCoordsFromPoint(Vec(0.125, 0.125, 0.125)));
-    ASSERT_EQ(Vec3i(2, 1, 1), tree.gridCoordsFromPoint(Vec(0.625, 0.375, 0.375)));
+    ASSERT_EQ(Vec3i(3, 3, 3), tree.gridCoordsFromPoint(Vec(2.5, 0.875, 0.875)));
+    ASSERT_EQ(Vec3i(0, 0, 0), tree.gridCoordsFromPoint(Vec(-0.5, 0.125, 0.125)));
+    ASSERT_EQ(Vec3i(2, 1, 1), tree.gridCoordsFromPoint(Vec(1.5, 0.375, 0.375)));
+
+    ASSERT_EQ(Vec(2.5, 0.875, 0.875), tree.voxelCenterFromCoords(Vec3i(3, 3, 3)));
+    ASSERT_EQ(Vec(-0.5, 0.125, 0.125), tree.voxelCenterFromCoords(Vec3i(0, 0, 0)));
+    ASSERT_EQ(Vec(1.5, 0.375, 0.375), tree.voxelCenterFromCoords(Vec3i(2, 1, 1)));
 }
 
 TEST(OCTree, Contruction) {

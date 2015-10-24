@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include <OpenMesh/Core/IO/MeshIO.hh>
+
 #include "common/mesh.h"
 #include "common/config.h"
 

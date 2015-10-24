@@ -14,7 +14,7 @@
 #include "octree.h"
 #include "util/tensor.h"
 
-#define GEDT_SIGMA2 4.4814201
+#define GEDT_SIGMA2 1.73
 #define GEDT_MAXD 4
 
 
@@ -37,6 +37,7 @@ private:
     cv::Mat image;
     OCTree *tree;
     list<Vec3i> seeds;
+    list<Vec> pointsOfInterest;
 
 
     static Vec3i immediateNeighbor(int i) {
@@ -47,6 +48,8 @@ private:
 
     void initializeSeeds();
 
+    void computePointsOfInterest();
+
     bool areCoordsInGrid(Vec3i c) {
         return c[0] >= 0 && c[0] < tree->getGridSize() &&
                c[1] >= 0 && c[1] < tree->getGridSize() &&
@@ -55,13 +58,18 @@ private:
 
 public:
 
-//    double getValue(int a, int b, int c) const {
-//        return values[a * tree->getGridSize2() + b * tree->getGridSize() + c];
-//    }
-//
-//    double getValue(const Vec3i &c) const {
-//        return getValue(c[0], c[1], c[2]);
-//    }
+    const Tensor &getValues() const {
+        return *values;
+    }
+
+    const list<Vec> &getPointsOfInterest() const {
+        return pointsOfInterest;
+    }
+
+
+    const OCTree &getTree() const {
+        return *tree;
+    }
 };
 
 #endif //SYMMETRY_DETECTION_GEDT_H
