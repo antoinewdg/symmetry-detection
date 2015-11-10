@@ -2,31 +2,17 @@
 #include <array>
 #include "gedt/octree.h"
 #include "common/common.h"
-#include "mesh_factory.h"
+#include "factory/mesh_factory.h"
 
 using std::array;
 
-
-TEST(OCTree, gridCoordsToPointConversion) {
-    Mesh mesh = MeshFactory::basicCube(-1, 0, 0, 3, 1, 1);
-    list<Mesh::FaceHandle> faces;
-    std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-    OCTree tree(mesh, BoundingBox(Vec(-1, 0, 0), Vec(3, 1, 1)), faces, 2);
-
-    ASSERT_EQ(Vec3i(3, 3, 3), tree.gridCoordsFromPoint(Vec(2.5, 0.875, 0.875)));
-    ASSERT_EQ(Vec3i(0, 0, 0), tree.gridCoordsFromPoint(Vec(-0.5, 0.125, 0.125)));
-    ASSERT_EQ(Vec3i(2, 1, 1), tree.gridCoordsFromPoint(Vec(1.5, 0.375, 0.375)));
-
-    ASSERT_EQ(Vec(2.5, 0.875, 0.875), tree.voxelCenterFromCoords(Vec3i(3, 3, 3)));
-    ASSERT_EQ(Vec(-0.5, 0.125, 0.125), tree.voxelCenterFromCoords(Vec3i(0, 0, 0)));
-    ASSERT_EQ(Vec(1.5, 0.375, 0.375), tree.voxelCenterFromCoords(Vec3i(2, 1, 1)));
-}
 
 TEST(OCTree, Contruction) {
     Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-    OCTree tree(mesh, BoundingBox(Vec(-0.01, -0.01, -0.01), Vec(1.01, 1.01, 1.01)), faces, 3);
+    OCTree tree(mesh, BoundingBox(Vec(-0.01, -0.01, -0.01), Vec(1.01, 1.01, 1.01)), 3);
+    tree.computeMesh(faces);
     for (int z = 1; z < 7; z++) {
         ASSERT_EQ(2, tree.getVoxelValue(0, 0, z));
         ASSERT_EQ(2, tree.getVoxelValue(7, 0, z));
@@ -74,5 +60,6 @@ TEST(OCTree, handlesLargeDepth) {
     Mesh mesh = MeshFactory::basicCube(0, 0, 0, 1, 1, 1);
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-    OCTree tree(mesh, BoundingBox(Vec(-0.01, -0.01, -0.01), Vec(1.01, 1.01, 1.01)), faces, 6);
+    OCTree tree(mesh, BoundingBox(Vec(-0.01, -0.01, -0.01), Vec(1.01, 1.01, 1.01)), 6);
+    tree.computeMesh(faces);
 }

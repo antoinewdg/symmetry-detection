@@ -9,7 +9,7 @@ SphericalCoordinateSystem::SphericalCoordinateSystem() {
 SphericalCoordinateSystem::SphericalCoordinateSystem(Mesh &mesh) : SphericalCoordinateSystem() {
     BoundingBox::centerMeshVertices(mesh);
     BoundingBox bb(mesh);
-    setRadius(bb.getMaxBoundaries().norm());
+    setRadius(bb.getMax().norm());
 
 }
 

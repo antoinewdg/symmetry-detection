@@ -10,30 +10,34 @@
 
 using std::vector;
 
+template<typename T>
 class Tensor {
 public:
+
+    Tensor() { }
+
     Tensor(int xSize, int ySize, int zSize) : data(xSize * ySize * zSize), xSize(xSize), ySize(ySize), zSize(zSize) {
 
     }
 
-    Tensor(int xSize, int ySize, int zSize, double v) : data(xSize * ySize * zSize, v), xSize(xSize), ySize(ySize),
-                                                        zSize(zSize) {
+    Tensor(int xSize, int ySize, int zSize, T v) : data(xSize * ySize * zSize, v), xSize(xSize), ySize(ySize),
+                                                   zSize(zSize) {
 
     }
 
-    double &operator()(int x, int y, int z) {
+    T &operator()(int x, int y, int z) {
         return data[x * ySize * zSize + y * zSize + z];
     }
 
-    double &operator()(Vec3i c) {
+    T &operator()(Vec3i c) {
         return (*this)(c[0], c[1], c[2]);
     }
 
-    double operator()(int x, int y, int z) const {
+    T operator()(int x, int y, int z) const {
         return data[x * ySize * zSize + y * zSize + z];
     }
 
-    double operator()(Vec3i c) const {
+    T operator()(Vec3i c) const {
         return (*this)(c[0], c[1], c[2]);
     }
 
@@ -47,7 +51,7 @@ public:
     }
 
 private:
-    vector<double> data;
+    vector<T> data;
     int xSize, ySize, zSize;
 
 public:
@@ -59,5 +63,9 @@ public:
         return data;
     }
 };
+
+
+typedef Tensor<double> Tensord;
+typedef Tensor<int> Tensori;
 
 #endif //SYMMETRY_DETECTION_TENSOR_H

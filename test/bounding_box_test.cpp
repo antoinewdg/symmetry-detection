@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
 #include "common/common.h"
 #include "bounding_box.h"
-#include "mesh_factory.h"
+#include "factory/mesh_factory.h"
 #include "assertions.h"
 
 
 TEST(BoundingBox, FindsRightBoundariesForCube) {
     BoundingBox f(MeshFactory::basicCube(0, 0, 0, 2, 2, 2));
 
-    ASSERT_EQ(Vec(-0.2, -0.2, -0.2), f.getMinBoundaries());
-    ASSERT_EQ(Vec(2.2, 2.2, 2.2), f.getMaxBoundaries());
+    ASSERT_EQ(Vec(-0.2, -0.2, -0.2), f.getMin());
+    ASSERT_EQ(Vec(2.2, 2.2, 2.2), f.getMax());
     ASSERT_EQ(Vec(1, 1, 1), f.getCenter());
 
 
@@ -19,29 +19,29 @@ TEST(BoundingBox, subdivide) {
     BoundingBox bb(Vec(1, 0, 0), Vec(2, 1, 1));
     vector<BoundingBox> subdivisions = bb.subdivisions();
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0, 0), subdivisions[0].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0.5), subdivisions[0].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0, 0), subdivisions[0].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0.5), subdivisions[0].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0, 0), subdivisions[1].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 0.5, 0.5), subdivisions[1].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0, 0), subdivisions[1].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 0.5, 0.5), subdivisions[1].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0.5, 0), subdivisions[2].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 1, 0.5), subdivisions[2].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0.5, 0), subdivisions[2].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 1, 0.5), subdivisions[2].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0, 0.5), subdivisions[3].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 1), subdivisions[3].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0, 0.5), subdivisions[3].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 1), subdivisions[3].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0.5, 0.5), subdivisions[4].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 1, 1), subdivisions[4].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1, 0.5, 0.5), subdivisions[4].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 1, 1), subdivisions[4].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0, 0.5), subdivisions[5].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 0.5, 1), subdivisions[5].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0, 0.5), subdivisions[5].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 0.5, 1), subdivisions[5].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0), subdivisions[6].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 1, 0.5), subdivisions[6].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0), subdivisions[6].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 1, 0.5), subdivisions[6].getMax()));
 
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0.5), subdivisions[7].getMinBoundaries()));
-    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 1, 1), subdivisions[7].getMaxBoundaries()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(1.5, 0.5, 0.5), subdivisions[7].getMin()));
+    ASSERT_TRUE(AreVecAlmostEqual(Vec(2, 1, 1), subdivisions[7].getMax()));
 
 }
 

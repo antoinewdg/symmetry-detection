@@ -14,6 +14,8 @@ class BoundingBox {
 
 public:
 
+    BoundingBox() { }
+
     BoundingBox(const Mesh &mesh);
 
     BoundingBox(Vec minBoundaires, Vec maxBoundaries);
@@ -22,14 +24,14 @@ public:
         vector<BoundingBox> subdivisions;
         Vec delta;
         subdivisions.push_back(BoundingBox(minBoundaries, center));
-//        std::cout << "min : " << subdivisions[0].getMinBoundaries() << " max: " <<
-//        subdivisions[0].getMaxBoundaries() << std::endl;
+//        std::cout << "min : " << subdivisions[0].getMin() << " max: " <<
+//        subdivisions[0].getMax() << std::endl;
         for (int i = 0; i < 3; i++) {
             delta = Vec(0, 0, 0);
             delta[i] = center[i] - minBoundaries[i];
             subdivisions.push_back(BoundingBox(minBoundaries + delta, center + delta));
-//            std::cout << "min : " << subdivisions[i + 1].getMinBoundaries() << " max: " <<
-//            subdivisions[i + 1].getMaxBoundaries() << std::endl;
+//            std::cout << "min : " << subdivisions[i + 1].getMin() << " max: " <<
+//            subdivisions[i + 1].getMax() << std::endl;
         }
         for (int i = 0; i < 3; i++) {
             delta = Vec(0, 0, 0);
@@ -53,11 +55,11 @@ private:
     Vec center;
 
 public:
-    const Vec &getMinBoundaries() const {
+    const Vec &getMin() const {
         return minBoundaries;
     }
 
-    const Vec &getMaxBoundaries() const {
+    const Vec &getMax() const {
         return maxBoundaries;
     }
 
@@ -67,9 +69,9 @@ public:
 };
 
 inline std::ostream &operator<<(std::ostream &out, const BoundingBox &bb) {
-    out << "[" << bb.getMinBoundaries() <<
+    out << "[" << bb.getMin() <<
     " - " << bb.getCenter() <<
-    " - " << bb.getMaxBoundaries() << "]";
+    " - " << bb.getMax() << "]";
     return out;
 }
 

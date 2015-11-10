@@ -1,19 +1,18 @@
 #include "gedt/octree.h"
 
 
-OCTree::OCTree(Mesh &mesh, const BoundingBox &boundingBox, const list<Mesh::FaceHandle> &potentialFaces, int maxDepth)
-        : boundingBox(boundingBox) {
-    gridSize = std::pow(2, maxDepth);
-    gridSize2 = gridSize * gridSize;
-    voxelValues = vector<int>(gridSize * gridSize * gridSize);
-//    std::cout << gridSize;
-    root = new Node(this, mesh, boundingBox, potentialFaces, maxDepth);
+OCTree::OCTree(Mesh &mesh, const BoundingBox &boundingBox, int maxDepth)
+        : grid(boundingBox, std::pow(2, maxDepth)), mesh(mesh), maxDepth(maxDepth),
+          voxelValues(grid.size, grid.size, grid.size) {
+
+
 }
 
 
-OCTree::~OCTree() {
-    delete (root);
+void OCTree::computeMesh(const list<Mesh::FaceHandle> &potentialFaces) {
+    root = unique_ptr<Node>(new Node(this, mesh, grid.bb, potentialFaces, maxDepth));
 }
+
 //
 //OCTree::Node::Node(OCTree *tree, Mesh &mesh, const BoundingBox &boundingBox,
 //                   const list<Mesh::FaceHandle> &potentialFaces,
@@ -52,7 +51,7 @@ OCTree::Node::Node(OCTree *tree, Mesh &mesh, const BoundingBox &boundingBox,
             children.push_back(new Node(tree, mesh, subdivisions[i], faces, maxDepth, depth + 1, this));
         }
     } else {
-        tree->setVoxelValue(boundingBox.getCenter(), facesNumber);
+        tree->voxelValues(tree->grid.coordsFromPoint(boundingBox.getCenter())) = int(facesNumber);
     }
 }
 
@@ -63,7 +62,7 @@ OCTree::Node::~Node() {
 }
 
 bool OCTree::Node::boxContainsFace(Mesh::FHandle f, const BoundingBox &bb) {
-    double r = (bb.getMaxBoundaries() - bb.getCenter()).norm();
+    double r = (bb.getMax() - bb.getCenter()).norm();
     vector<Vec> points;
     for (Mesh::FaceVertexIter it = mesh.fv_iter(f); it.is_valid(); it++) {
         points.push_back(mesh.point(*it));
@@ -72,10 +71,4 @@ bool OCTree::Node::boxContainsFace(Mesh::FHandle f, const BoundingBox &bb) {
 }
 
 
-double OCTree::getVoxelVolume() const {
 
-    return (boundingBox.getMaxBoundaries()[0] - boundingBox.getMinBoundaries()[0])
-           * (boundingBox.getMaxBoundaries()[1] - boundingBox.getMinBoundaries()[1])
-           * (boundingBox.getMaxBoundaries()[2] - boundingBox.getMinBoundaries()[2])
-           / (gridSize2 * gridSize);
-}

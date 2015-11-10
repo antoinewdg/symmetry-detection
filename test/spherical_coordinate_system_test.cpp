@@ -2,7 +2,7 @@
 #include <cmath>
 #include "common/common.h"
 #include "spherical_coordinate_system.h"
-#include "mesh_factory.h"
+#include "factory/mesh_factory.h"
 
 
 TEST(SphericalCoordinateSystem, ConstructorFitsMesh) {

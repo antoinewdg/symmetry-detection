@@ -16,7 +16,7 @@ using std::vector;
 
 class Sampler {
 public:
-    Sampler(const GEDT &f) : f(f), tree(f.getTree()) {
+    Sampler(const GEDT &f) : f(f), grid(f.getGrid()) {
         unsigned int seed = unsigned(std::chrono::system_clock::now().time_since_epoch().count());
         generator.seed(seed);
         distribution = std::discrete_distribution<int>(f.getValues().getData().begin(), f.getValues().getData().end());
@@ -25,7 +25,7 @@ public:
     Vec next() {
         Vec3i c = f.getValues().coordsFromIndex(distribution(generator));
 //        std::cout << "sampled: " << c << std::endl;
-        return tree.voxelCenterFromCoords(c);
+        return grid.voxelCenterFromCoords(c);
     }
 
     vector<Vec> samples(unsigned int n) {
@@ -39,7 +39,7 @@ public:
 
 private:
     const GEDT &f;
-    const OCTree &tree;
+    const Grid &grid;
 
     std::default_random_engine generator;
     std::discrete_distribution<int> distribution;
