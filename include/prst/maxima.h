@@ -1,0 +1,8 @@
+//
+// Created by geoffrey on 10/11/15.
+//
+
+#ifndef SYMMETRY_DETECTION_MAXIMA_H
+#define SYMMETRY_DETECTION_MAXIMA_H
+
+#endif //SYMMETRY_DETECTION_MAXIMA_H
