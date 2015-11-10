@@ -54,6 +54,10 @@ public:
     const vector<double> &getData() const {
         return data;
     }
+
+    vector<double> &getData() {
+        return data;
+    }
 };
 
 #endif //SYMMETRY_DETECTION_TENSOR_H

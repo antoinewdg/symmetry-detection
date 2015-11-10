@@ -82,6 +82,8 @@ public:
         return r;
     }
 
+    double getVoxelVolume() const;
+
 private:
     Node *root;
     BoundingBox boundingBox;

@@ -11,18 +11,17 @@ GEDT::GEDT(Mesh &mesh, int treeDepth) : mesh(mesh), boundingBox(mesh) {
         regionGrowth(seed, seed, GEDT_MAXD * GEDT_MAXD, GEDT_SIGMA2);
     }
 
-    computePointsOfInterest();
+    normalize();
 
 
-    image = cv::Mat::zeros(tree->getGridSize(), tree->getGridSize(), CV_32F);
-    for (int x = 0; x < tree->getGridSize(); x++) {
-        for (int y = 0; y < tree->getGridSize(); y++) {
-            image.at<float>(image.rows - y - 1, x) = (*values)(x, y, tree->getGridSize() / 2);
-
-
-        }
-    }
-
+//    image = cv::Mat::zeros(tree->getGridSize(), tree->getGridSize(), CV_32F);
+//    for (int x = 0; x < tree->getGridSize(); x++) {
+//        for (int y = 0; y < tree->getGridSize(); y++) {
+//            image.at<float>(image.rows - y - 1, x) = (*values)(x, y, tree->getGridSize() / 2);
+//
+//
+//        }
+//    }
 
 //    std::cout << image;
 //    cv::imshow("dd", image);
@@ -65,20 +64,18 @@ void GEDT::regionGrowth(const Vec3i &c, const Vec3i &seed, double maxD2, double 
 }
 
 
-void GEDT::computePointsOfInterest() {
-    for (int x = 0; x < tree->getGridSize(); x++) {
-        for (int y = 0; y < tree->getGridSize(); y++) {
-            for (int z = 0; z < tree->getGridSize(); z++) {
-                if ((*values)(x, y, z) > 0.1) {
-//                    std::cout << (*values)(x, y, z) << std::endl;
-                    pointsOfInterest.push_back(tree->voxelCenterFromCoords(Vec3i(x, y, z)));
-                }
-            }
-        }
-    }
-}
-
 GEDT::~GEDT() {
     delete (tree);
     delete (values);
+}
+
+void GEDT::normalize() {
+    double V = tree->getVoxelVolume(), norm = 0;
+    for (double d : values->getData()) {
+        norm += d;
+    }
+    norm /= V;
+    for (double &d : values->getData()) {
+        d /= norm;
+    }
 }

@@ -72,3 +72,10 @@ bool OCTree::Node::boxContainsFace(Mesh::FHandle f, const BoundingBox &bb) {
 }
 
 
+double OCTree::getVoxelVolume() const {
+
+    return (boundingBox.getMaxBoundaries()[0] - boundingBox.getMinBoundaries()[0])
+           * (boundingBox.getMaxBoundaries()[1] - boundingBox.getMinBoundaries()[1])
+           * (boundingBox.getMaxBoundaries()[2] - boundingBox.getMinBoundaries()[2])
+           / (gridSize2 * gridSize);
+}
