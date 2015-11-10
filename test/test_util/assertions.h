@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 #include "common/common.h"
 
-::testing::AssertionResult AreVecAlmostEqual(const Vec &u, const Vec &v, double epsilon = 1e-5) {
+inline ::testing::AssertionResult AreVecAlmostEqual(const Vec &u, const Vec &v, double epsilon = 1e-5) {
     bool success = true;
 //    std::cout << "TESTING - u: " << u << " v: " << v << std::endl;
     for (int i = 0; i < 3; i++) {
