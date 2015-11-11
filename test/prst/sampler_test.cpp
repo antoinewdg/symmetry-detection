@@ -4,7 +4,7 @@
 
 #include "gedt/gedt.h"
 #include "prst/sampler.h"
-#include "mesh_factory.h"
+#include "factory/mesh_factory.h"
 
 TEST(Sampler, visualTest) {
 //    Mesh mesh;

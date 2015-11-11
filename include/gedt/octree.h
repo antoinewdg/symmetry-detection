@@ -13,11 +13,12 @@
 
 #include "common/common.h"
 #include "geometry/face_intersection.h"
+#include "geometry/grid.h"
+#include "util/tensor.h"
 
 
 using std::list;
-using std::shared_ptr;
-using std::weak_ptr;
+using std::unique_ptr;
 using std::vector;
 
 class OCTree {
@@ -49,58 +50,23 @@ class OCTree {
     };
 
 public:
-    OCTree(Mesh &mesh, const BoundingBox &boundingBox, const list<Mesh::FaceHandle> &potentialFaces,
-           int maxDepth = OCTREE_DEPTH);
+    OCTree(Mesh &mesh, const BoundingBox &boundingBox, int maxDepth);
 
-    virtual ~OCTree();
+    void computeMesh(const list<Mesh::FaceHandle> &potentialFaces);
 
-    Vec3i gridCoordsFromPoint(const Vec &p) const {
-        Vec3i r;
-        Vec c(p);
-//        std::cout << c << " - " << p << std::endl;
-//        c = gridSize * (c - boundingBox.getMinBoundaries());
-        for (int i = 0; i < 3; i++) {
-            c[i] = (double(gridSize) / (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i])) *
-                   (c[i] - boundingBox.getMinBoundaries()[i]);
-            r[i] = int(std::floor(c[i]));
-            if (r[i] >= gridSize) {
-                std::cout << "Error for float " << p[i] << std::endl;
-            }
-        }
-
-        return r;
-    }
-
-    Vec voxelCenterFromCoords(const Vec3i &c) const {
-        Vec r;
-
-        for (int i = 0; i < 3; i++) {
-            double ratio = (boundingBox.getMaxBoundaries()[i] - boundingBox.getMinBoundaries()[i]) / gridSize;
-            r[i] = boundingBox.getMinBoundaries()[i] + ratio * (0.5 + c[i]);
-        }
-
-        return r;
-    }
 
 private:
-    Node *root;
-    BoundingBox boundingBox;
-    int gridSize, gridSize2;
-    vector<int> voxelValues;
+    unique_ptr<Node> root;
+    Grid grid;
+    Mesh &mesh;
+    int maxDepth;
+    Tensori voxelValues;
 
-    inline void setVoxelValue(const Vec3i &c, int v) {
-//        std::cout << "setting voexl value : " << c << std::endl;
-        voxelValues[c[0] * gridSize2 + c[1] * gridSize + c[2]] = v;
-    }
-
-    inline void setVoxelValue(const Vec &p, int v) {
-        setVoxelValue(gridCoordsFromPoint(p), v);
-    }
 
 public:
 
     inline int getVoxelValue(int a, int b, int c) const {
-        return voxelValues[a * gridSize2 + b * gridSize + c];
+        return voxelValues(a, b, c);
     }
 
     inline int getVoxelValue(const Vec3i &c) const {
@@ -108,16 +74,11 @@ public:
     }
 
     inline int getVoxelValue(const Vec &p) const {
-        return getVoxelValue(gridCoordsFromPoint(p));
+        return getVoxelValue(grid.coordsFromPoint(p));
     }
 
-    inline int getGridSize() const {
-        return gridSize;
-    }
-
-
-    inline int getGridSize2() const {
-        return gridSize2;
+    inline const Grid &getGrid() const {
+        return grid;
     }
 };
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <array>
 #include <random>
-#include <mesh_factory.h>
+//#include <factory/mesh_factory.h>
 
 #include "common/common.h"
 #include "bounding_box.h"
@@ -14,30 +14,30 @@ using std::list;
 
 int main() {
 
-//    Mesh mesh;
-//    if (!OpenMesh::IO::read_mesh(mesh, ASSETS_DIR "/teapot.off")) {
-//        std::cerr << "read error\n";
-//        exit(1);
-//    }
+    Mesh mesh;
+    if (!OpenMesh::IO::read_mesh(mesh, ASSETS_DIR "/teapot.off")) {
+        std::cerr << "read error\n";
+        exit(1);
+    }
 //
 //    BoundingBox::centerMeshVertices(mesh);
 //    BoundingBox d(mesh);
 ////    std::cout << d.getCenter() << std::endl;
 //
-//    list<Mesh::FaceHandle> faces;
-//    std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-//
-//    GEDT gedt(mesh, OCTREE_DEPTH);
+    list<Mesh::FaceHandle> faces;
+    std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
+
+    GEDT gedt(mesh, OCTREE_DEPTH);
 //    std::cout << std::endl << gedt.getPointsOfInterest().size();
-    vector<double> v(64 * 64 * 64, 1.0);
-
-    std::discrete_distribution<int> distribution(v.begin(), v.end());
-
-    std::default_random_engine generator;
-
-    for (int i = 0; i < 10000; i++) {
-        std::cout << distribution(generator) << std::endl;
-    }
+//    vector<double> v(64 * 64 * 64, 1.0);
+//
+//    std::discrete_distribution<int> distribution(v.begin(), v.end());
+//
+//    std::default_random_engine generator;
+//
+//    for (int i = 0; i < 10000; i++) {
+//        std::cout << distribution(generator) << std::endl;
+//    }
 //    OCTree tree(mesh, d, faces, 7);
 //    int r = 128;
 //    for (int x = 0; x < r; x++) {

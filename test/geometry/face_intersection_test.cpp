@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "geometry/face_intersection.h"
-#include "mesh_factory.h"
+#include "factory/mesh_factory.h"
 #include "bounding_box.h"
 
 //TEST(FaceIntersection, WorksWithTriangles) {

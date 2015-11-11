@@ -35,7 +35,7 @@ public:
         for (int i = 0; i < 3; i++) {
             Vec n = boxNormals[i];
             projectPointsOnAxis(points, boxNormals[i], triangleMin, triangleMax);
-            if (triangleMax < bb.getMinBoundaries()[i] || triangleMin > bb.getMaxBoundaries()[i])
+            if (triangleMax < bb.getMin()[i] || triangleMin > bb.getMax()[i])
                 return false; // No intersection possible.
         }
 
@@ -55,7 +55,7 @@ public:
             for (int j = 0; j < 3; j++) {
                 // The box normals are the same as it's edge tangents
                 Vec axis = edges[i] % boxNormals[j];
-                projectPointsOnAxis({bb.getMinBoundaries(), bb.getMaxBoundaries()}, axis, boxMin, boxMax);
+                projectPointsOnAxis({bb.getMin(), bb.getMax()}, axis, boxMin, boxMax);
                 projectPointsOnAxis(points, axis, boxMin, boxMax);
 
                 if (boxMax <= triangleMin || boxMin >= triangleMax)
@@ -80,7 +80,7 @@ public:
 //        for (int i = 0; i < 3; i++) {
 //            Vec n = boxNormals[i];
 //            projectPointsOnAxis(f, boxNormals[i], triangleMin, triangleMax, mesh);
-//            if (triangleMax < bb.getMinBoundaries()[i] || triangleMin > bb.getMaxBoundaries()[i])
+//            if (triangleMax < bb.getMin()[i] || triangleMin > bb.getMax()[i])
 //                return false; // No intersection possible.
 //        }
 //
@@ -88,7 +88,7 @@ public:
 //
 //        // Test the triangle normal
 //        double triangleOffset = faceNormal | mesh.point(*(mesh.fv_iter(f)));
-//        projectPointsOnAxis({bb.getMinBoundaries(), bb.getMaxBoundaries()}, faceNormal, boxMin, boxMax);
+//        projectPointsOnAxis({bb.getMin(), bb.getMax()}, faceNormal, boxMin, boxMax);
 //        if (boxMax < triangleOffset || boxMin > triangleOffset)
 //            return false; // No intersection possible.
 //
@@ -101,7 +101,7 @@ public:
 //            for (int j = 0; j < 3; j++) {
 //                // The box normals are the same as it's edge tangents
 //                Vec axis = triangleEdges[i] % boxNormals[j];
-//                projectPointsOnAxis({bb.getMinBoundaries(), bb.getMaxBoundaries()}, axis, boxMin, boxMax);
+//                projectPointsOnAxis({bb.getMin(), bb.getMax()}, axis, boxMin, boxMax);
 //                projectPointsOnAxis(f, axis, triangleMin, triangleMax, mesh);
 //                if (boxMax <= triangleMin || boxMin >= triangleMax)
 //                    return false; // No intersection possible

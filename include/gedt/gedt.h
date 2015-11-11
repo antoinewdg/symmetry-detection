@@ -13,6 +13,7 @@
 #include "common/common.h"
 #include "octree.h"
 #include "util/tensor.h"
+#include "geometry/grid.h"
 
 #define GEDT_SIGMA2 1.73
 #define GEDT_MAXD 4
@@ -23,21 +24,20 @@ class GEDT {
 public:
     GEDT(Mesh &mesh, int treeDepth);
 
-    virtual ~GEDT();
 
     double operator()(const Vec &p) const {
-        return (*values)(tree->gridCoordsFromPoint(p));
+        return values(grid.coordsFromPoint(p));
     }
 
 private:
     Mesh &mesh;
     BoundingBox boundingBox;
 
-    Tensor *values;
+    Tensord values;
     cv::Mat image;
-    OCTree *tree;
+    OCTree tree;
+    const Grid &grid;
     list<Vec3i> seeds;
-    list<Vec> pointsOfInterest;
 
 
     static Vec3i immediateNeighbor(int i) {
@@ -48,27 +48,27 @@ private:
 
     void initializeSeeds();
 
-    void computePointsOfInterest();
+    void normalize();
 
     bool areCoordsInGrid(Vec3i c) {
-        return c[0] >= 0 && c[0] < tree->getGridSize() &&
-               c[1] >= 0 && c[1] < tree->getGridSize() &&
-               c[2] >= 0 && c[2] < tree->getGridSize();
+        return c[0] >= 0 && c[0] < grid.size &&
+               c[1] >= 0 && c[1] < grid.size &&
+               c[2] >= 0 && c[2] < grid.size;
     }
 
 public:
 
-    const Tensor &getValues() const {
-        return *values;
-    }
-
-    const list<Vec> &getPointsOfInterest() const {
-        return pointsOfInterest;
+    const Tensord &getValues() const {
+        return values;
     }
 
 
     const OCTree &getTree() const {
-        return *tree;
+        return tree;
+    }
+
+    const Grid &getGrid() const {
+        return grid;
     }
 };
 
