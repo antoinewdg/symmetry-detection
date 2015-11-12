@@ -7,11 +7,16 @@
 
 #include "common/common.h"
 #include "bounding_box.h"
+#include "geometry/plane.h"
 
 class Grid {
 public:
     Grid(BoundingBox bb, int size) : bb(bb), size(size) {
         size2 = size * size;
+        radius = (bb.getMax() - bb.getMin()).norm() / 2;
+        rStep = 2 * radius / size;
+        thetaStep = M_PI / (2 * size);
+        phiStep = (2.0 / size) * M_PI;
     }
 
     Vec3i coordsFromPoint(const Vec &p) const {
@@ -50,8 +55,18 @@ public:
                / (size * size2);
     }
 
+    Plane closestDiscretePlane(Plane p) {
+        p.r = (std::round(((p.r + radius) / rStep) + 0.5) - 0.5) * rStep - radius;
+        p.theta = (std::round((p.theta / thetaStep) + 0.5) - 0.5) * thetaStep;
+        p.phi = (std::round((p.phi / phiStep) + 0.5) - 0.5) * phiStep;
+//        p.forceUniqueHorizontal();
+
+        return p;
+    }
+
     BoundingBox bb;
     int size, size2;
+    double radius, rStep, thetaStep, phiStep;
 };
 
 #endif //SYMMETRY_DETECTION_GRID_H

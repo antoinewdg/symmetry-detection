@@ -14,7 +14,9 @@ public:
 
     Plane() { }
 
-    Plane(double r, double theta, double phi) : r(r), theta(theta), phi(phi) { }
+    Plane(double r, double theta, double phi) : r(r), theta(theta), phi(phi) {
+        forceUniqueHorizontal();
+    }
 
     static Plane betweenPoints(const Vec &p, const Vec &q) {
         Vec n = (p - q).normalize();
@@ -33,8 +35,14 @@ public:
             plane.theta = M_PI - plane.theta;
             plane.phi = std::fmod(plane.phi + M_PI, 2 * M_PI);
         }
-
+        plane.forceUniqueHorizontal();
         return plane;
+    }
+
+    void forceUniqueHorizontal() {
+        if (theta == M_PI * 0.5) {
+            phi = 0;
+        }
     }
 
 
