@@ -55,7 +55,7 @@ public:
                / (size * size2);
     }
 
-    Plane closestDiscretePlane(Plane p) {
+    Plane closestDiscretePlane(Plane p) const {
         p.r = (std::round(((p.r + radius) / rStep) + 0.5) - 0.5) * rStep - radius;
         p.theta = (std::round((p.theta / thetaStep) + 0.5) - 0.5) * thetaStep;
         p.phi = (std::round((p.phi / phiStep) + 0.5) - 0.5) * phiStep;

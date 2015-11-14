@@ -6,9 +6,11 @@ PRST::PRST(const GEDT &f) : f(f), grid(f.getGrid()), sampler(f) {
 
 //    Plane
 
-    for(Vec& x : samplesA){
-        for(Vec& y : samplesB){
-
+    for (Vec &x : samplesA) {
+        for (Vec &y : samplesB) {
+            Plane p = grid.closestDiscretePlane(
+                    Plane::betweenPoints(x, y)
+            );
         }
     }
 }
