@@ -15,35 +15,42 @@ public:
     vector<CvPoint> PRSTMaxima;
     double threshold;
 
-    void computeMaxima() {
+    void computeMaxima(GEDT gedt) {
+        Grid grid = gedt.getGrid();
 
         /* Calculate PRST of all plans (discrete ones we have) */
         double max = 0;
         double PRST;
-        for (double r = 0; r<rMax; r += rStep){
-            for (double theta = 0; theta < M_PI; theta += thetaStep){
-                for (double phi = 0; phi <2* M_PI; phi += phiStep){
+        for (double r = -grid.radius; r<grid.radius; r += grid.rStep){
+            for (double theta = 0; theta < M_PI; theta += grid.thetaStep){
+                for (double phi = 0; phi <2* M_PI; phi += grid.phiStep){
                     Plane plane (r, theta, phi);
+                    // on regarde le plan discret le plus proche (potentiellement confondu avec plane ?)
+                    plane = grid.closestDiscretePlane(plane);
+                    //on calcule sa PRST
                     PRST = PRST(plane);
-                    if (PRST > max) {
-                        max = PRST;
-                    }
+                    //on regarde si c'est un max local
                     bool isMaxima = true;
-                    vector<Plane> neighbors = plane.neighbors(rStep, thetaStep, phiStep);
+                    vector<Plane> neighbors = plane.neighbors(grid);
                     for (int i=0; i<neighbors.size(); i++) {
                         if (PRST(neighbors[i]) > PRST) {
                             isMaxima = false;
                             break;
                         }
                     }
+                    //Si c'est un max local, on vérifie si c'est le max global,
+                    // et dans ce cas on le conserve
+                    if (isMaxima && PRST > max) {
+                        max = PRST;
+                    }
                 }
             }
         }
 
-        this.threshold = 1 / 10 * max;
+        threshold = 1 / 10 * max;
 
-        /* threshold = 1/10*max of local maxima
-        * Get rid of points under threshold*(1-r/R) with r : distance of the plane to the center of mass
+        /* Get rid of points under threshold*(1-r/R) with r : distance of the plane to the center of mass
+         * (compute center of mass later)
         * R : radius of the object
         * Then, we get rid of those whose Laplacian is under threshold
         *

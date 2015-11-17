@@ -6,9 +6,11 @@
 #define SYMMETRY_DETECTION_PLANE_H
 
 #include "common/common.h"
+#include "gedt/gedt.h"
+#include "geometry/grid.h"
 
-using std::vector
-using std::pair
+using std::vector;
+using std::pair;
 
 class Plane {
 public:
@@ -57,8 +59,6 @@ public:
         }
     }
 
-
-
     static Vec projectPointOnCartesianPlane(const Vec &p, const Vec &planeNormal, const Vec &planePoint) {
         Vec v = ((p - planePoint) | planeNormal) * planeNormal;
         return p - v;
@@ -69,6 +69,40 @@ public:
         return 2*v-p;
     }
 
+    vector<Plane> neighbors(Grid grid){
+        Grid grid = gedt.getGrid();
+        vector<Plane> result;
+        result.push_back(Plane(r+grid.rStep, theta, phi));
+        result.push_back(Plane(r+grid.rStep, theta+grid.thetaStep, phi));
+        result.push_back(Plane(r+grid.rStep, theta+grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r+grid.rStep, theta+grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r+grid.rStep, theta-grid.thetaStep, phi));
+        result.push_back(Plane(r+grid.rStep, theta-grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r+grid.rStep, theta-grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r+grid.rStep, theta, phi+grid.phiStep));
+        result.push_back(Plane(r+grid.rStep, theta, phi-grid.phiStep));
+
+        result.push_back(Plane(r-grid.rStep, theta, phi));
+        result.push_back(Plane(r-grid.rStep, theta+grid.thetaStep, phi));
+        result.push_back(Plane(r-grid.rStep, theta+grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r-grid.rStep, theta+grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r-grid.rStep, theta-grid.thetaStep, phi));
+        result.push_back(Plane(r-grid.rStep, theta-grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r-grid.rStep, theta-grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r-grid.rStep, theta, phi+grid.phiStep));
+        result.push_back(Plane(r-grid.rStep, theta, phi-grid.phiStep));
+
+        result.push_back(Plane(r, theta+grid.thetaStep, phi));
+        result.push_back(Plane(r, theta+grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r, theta+grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r, theta-grid.thetaStep, phi));
+        result.push_back(Plane(r, theta-grid.thetaStep, phi+grid.phiStep));
+        result.push_back(Plane(r, theta-grid.thetaStep, phi-grid.phiStep));
+        result.push_back(Plane(r, theta, phi+grid.phiStep));
+        result.push_back(Plane(r, theta, phi-grid.phiStep));
+
+        return result;
+    }
 };
 
 #endif //SYMMETRY_DETECTION_PLANE_H
