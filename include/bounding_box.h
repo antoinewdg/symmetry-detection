@@ -16,7 +16,7 @@ public:
 
     BoundingBox() { }
 
-    BoundingBox(const Mesh &mesh);
+    BoundingBox(Mesh &mesh);
 
     BoundingBox(Vec minBoundaires, Vec maxBoundaries);
 
@@ -46,9 +46,7 @@ public:
 
     static void centerMeshVertices(Mesh &mesh);
 
-private:
     void evaluateBoundaries(const Mesh &mesh);
-
 
 private:
     Vec minBoundaries, maxBoundaries;

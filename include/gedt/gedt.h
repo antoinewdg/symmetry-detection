@@ -25,8 +25,12 @@ public:
     GEDT(Mesh &mesh, int treeDepth);
 
 
-    double operator()(const Vec &p) const {
+    inline double operator()(const Vec &p) const {
         return values(grid.coordsFromPoint(p));
+    }
+
+    inline double normalized(const Vec &p) const {
+        return (*this)(p) / norm;
     }
 
 private:
@@ -38,6 +42,7 @@ private:
     OCTree tree;
     const Grid &grid;
     list<Vec3i> seeds;
+    double norm;
 
 
     static Vec3i immediateNeighbor(int i) {
@@ -48,7 +53,7 @@ private:
 
     void initializeSeeds();
 
-    void normalize();
+    double computeNorm();
 
     bool areCoordsInGrid(Vec3i c) {
         return c[0] >= 0 && c[0] < grid.size &&
@@ -62,6 +67,9 @@ public:
         return values;
     }
 
+    Mesh &getMesh() const {
+        return mesh;
+    }
 
     const OCTree &getTree() const {
         return tree;

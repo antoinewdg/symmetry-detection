@@ -8,6 +8,7 @@
 #include "spherical_coordinate_system.h"
 #include "gedt/octree.h"
 #include "gedt/gedt.h"
+#include "prst/prst.h"
 
 using std::array;
 using std::list;
@@ -28,6 +29,9 @@ int main() {
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
 
     GEDT gedt(mesh, OCTREE_DEPTH);
+
+    std::cout << "lol" << std::endl;
+    PRST prst(gedt);
 //    std::cout << std::endl << gedt.getPointsOfInterest().size();
 //    vector<double> v(64 * 64 * 64, 1.0);
 //

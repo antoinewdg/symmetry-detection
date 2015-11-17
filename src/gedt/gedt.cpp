@@ -2,6 +2,7 @@
 
 GEDT::GEDT(Mesh &mesh, int treeDepth) :
         mesh(mesh), boundingBox(mesh), tree(mesh, boundingBox, treeDepth), grid(tree.getGrid()) {
+
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
     tree.computeMesh(faces);
@@ -12,8 +13,7 @@ GEDT::GEDT(Mesh &mesh, int treeDepth) :
         regionGrowth(seed, seed, GEDT_MAXD * GEDT_MAXD, GEDT_SIGMA2);
     }
 
-//    normalize();
-
+//    norm = computeNorm();
 
 //    image = cv::Mat::zeros(grid.size, grid.size, CV_32F);
 //    for (int x = 0; x < grid.size; x++) {
@@ -65,13 +65,11 @@ void GEDT::regionGrowth(const Vec3i &c, const Vec3i &seed, double maxD2, double 
 }
 
 
-void GEDT::normalize() {
-    double V = grid.getVoxelVolume(), norm = 0;
+double GEDT::computeNorm() {
+    double V = grid.getVoxelVolume(), n = 0;
     for (double d : values.getData()) {
-        norm += d;
+        n += d;
     }
-    norm /= V;
-    for (double &d : values.getData()) {
-        d /= norm;
-    }
+    return n / V;
+
 }

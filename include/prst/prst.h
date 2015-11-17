@@ -19,10 +19,22 @@ class PRST {
 public:
     PRST(const GEDT &f);
 
+
 private:
     const Grid &grid;
     const GEDT &f;
     Sampler sampler;
+    double max;
+    Plane maxP;
+
+    vector<double> values;
+    vector<int> counts;
+
+public:
+
+    double getMax() const {
+        return max;
+    }
 };
 
 #endif //SYMMETRY_DETECTION_PRST_H

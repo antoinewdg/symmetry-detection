@@ -32,4 +32,6 @@ TEST(Grid, closestDiscretePlane) {
     ASSERT_DOUBLE_EQ(7 * M_PI / 16, p.theta);
     ASSERT_DOUBLE_EQ(3 * M_PI / 4, p.phi);
 
+    ASSERT_EQ(13, grid.planeIndex(p));
+
 }

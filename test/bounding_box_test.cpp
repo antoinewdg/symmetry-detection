@@ -6,7 +6,9 @@
 
 
 TEST(BoundingBox, FindsRightBoundariesForCube) {
-    BoundingBox f(MeshFactory::basicCube(0, 0, 0, 2, 2, 2));
+
+    BoundingBox f;
+    f.evaluateBoundaries(MeshFactory::basicCube(0, 0, 0, 2, 2, 2));
 
     ASSERT_EQ(Vec(-0.2, -0.2, -0.2), f.getMin());
     ASSERT_EQ(Vec(2.2, 2.2, 2.2), f.getMax());

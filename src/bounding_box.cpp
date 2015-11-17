@@ -4,8 +4,8 @@
 
 #include "bounding_box.h"
 
-BoundingBox::BoundingBox(const Mesh &mesh) {
-
+BoundingBox::BoundingBox(Mesh &mesh) {
+    centerMeshVertices(mesh);
     evaluateBoundaries(mesh);
 }
 
@@ -41,7 +41,8 @@ void BoundingBox::evaluateBoundaries(const Mesh &mesh) {
 }
 
 void BoundingBox::centerMeshVertices(Mesh &mesh) {
-    BoundingBox bb(mesh);
+    BoundingBox bb;
+    bb.evaluateBoundaries(mesh);
     for (Mesh::VertexIter it = mesh.vertices_begin(); it != mesh.vertices_end(); it++) {
         mesh.point(*it) = mesh.point(*it) - bb.getCenter();
     }

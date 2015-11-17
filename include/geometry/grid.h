@@ -13,6 +13,7 @@ class Grid {
 public:
     Grid(BoundingBox bb, int size) : bb(bb), size(size) {
         size2 = size * size;
+        size3 = size2 * size;
         radius = (bb.getMax() - bb.getMin()).norm() / 2;
         rStep = 2 * radius / size;
         thetaStep = M_PI / (2 * size);
@@ -57,16 +58,34 @@ public:
 
     Plane closestDiscretePlane(Plane p) const {
         p.r = (std::round(((p.r + radius) / rStep) + 0.5) - 0.5) * rStep - radius;
-        p.theta = (std::round((p.theta / thetaStep) + 0.5) - 0.5) * thetaStep;
+        if (p.theta < M_PI / 2) {
+            p.theta = (std::round((p.theta / thetaStep) + 0.5) - 0.5) * thetaStep;
+        } else {
+            p.theta = M_PI / 2 - thetaStep / 2;
+        }
         p.phi = (std::round((p.phi / phiStep) + 0.5) - 0.5) * phiStep;
 //        p.forceUniqueHorizontal();
 
         return p;
     }
 
+    inline int planeIndex(Plane p) const {
+        return size2 * int(((p.r + radius) / rStep) - 0.5) +
+               size * int((p.theta / thetaStep) - 0.5) +
+               int((p.phi / phiStep) - 0.5);
+    }
+
     BoundingBox bb;
-    int size, size2;
+    int size, size2, size3;
     double radius, rStep, thetaStep, phiStep;
 };
+
+inline std::ostream &operator<<(std::ostream &out, const Grid &g) {
+    out << "radius: " << g.radius <<
+    " - steps: r " << g.rStep <<
+    " theta " << g.thetaStep / M_PI << "pi" <<
+    " phi " << g.phiStep / M_PI;
+    return out;
+}
 
 #endif //SYMMETRY_DETECTION_GRID_H
