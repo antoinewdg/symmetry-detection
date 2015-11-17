@@ -7,14 +7,17 @@
 
 #include "common/common.h"
 
+using std::vector
+using std::pair
+
 class Plane {
 public:
     double r, theta, phi;
 
-
     Plane() { }
 
     Plane(double r, double theta, double phi) : r(r), theta(theta), phi(phi) { }
+
 
     static Plane betweenPoints(const Vec &p, const Vec &q) {
         Vec n = (p - q).normalize();
@@ -38,10 +41,17 @@ public:
     }
 
 
+
     static Vec projectPointOnCartesianPlane(const Vec &p, const Vec &planeNormal, const Vec &planePoint) {
         Vec v = ((p - planePoint) | planeNormal) * planeNormal;
         return p - v;
     }
+
+    static Vec reflectPointOnCartesianPlane(const Vec &p, const Vec &planeNormal, const Vec &planePoint){
+        Vec v = projectPointOnCartesianPlane(p, planeNormal, planePoint);
+        return 2*v-p;
+    }
+
 };
 
 #endif //SYMMETRY_DETECTION_PLANE_H
