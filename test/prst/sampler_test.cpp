@@ -20,7 +20,7 @@ TEST(Sampler, visualTest) {
 //    for (int i = 0; i < 64 * 64; i++) {
 //        Vec p = sampler.next();
 //        std::cout << f(p) << std::endl;
-//        Vec3i c = f.getTree().gridCoordsFromPoint(p);
+//        Vec3i c = f.getGrid().coordsFromPoint(p);
 //        image.at<float>(c[0], c[1])++;
 //    }
 //
