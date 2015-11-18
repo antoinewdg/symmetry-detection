@@ -55,7 +55,7 @@ public:
 
         n[0] = std::sin(copy.theta) * std::cos(copy.phi);
         n[1] = std::sin(copy.theta) * std::sin(copy.phi);
-        n[2] = std::sin(copy.phi);
+        n[2] = std::cos(copy.theta);
 
         point = copy.r * n;
 

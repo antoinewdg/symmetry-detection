@@ -4,8 +4,8 @@
 PRST::PRST(const GEDT &f) :
         f(f), grid(f.getGrid()), sampler(f), values(grid.size3, 0), counts(grid.size3, 0), max(0) {
 
-    vector<Vec> samplesA(sampler.samples(2 * grid.size2)),
-            samplesB(sampler.samples(2 * grid.size2));
+    vector<Vec> samplesA(sampler.samples(grid.size2)),
+            samplesB(sampler.samples(grid.size2));
 
 //    Plane
 
@@ -30,39 +30,31 @@ PRST::PRST(const GEDT &f) :
         }
     }
 
-    Mesh::VertexHandle vhandle[8];
-
+    /* TODO Move somewhere else */
+//
+    Mesh::VertexHandle vhandle[4];
+//
     Vec n, point;
     maxP.toCartesian(n, point);
+    Vec A = grid.bb.getMin(),
+            B = grid.bb.getMax(),
+            C = Vec(grid.bb.getMax()[0], grid.bb.getMin()[1], grid.bb.getMin()[2]),
+            D = Vec(grid.bb.getMin()[0], grid.bb.getMax()[1], grid.bb.getMax()[2]);
 
+    vhandle[0] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(A, n, point));
+    vhandle[1] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(B, n, point));
+    vhandle[2] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(C, n, point));
+    vhandle[3] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(D, n, point));
 
-    vhandle[0] = f.getMesh().add_vertex(point + 3 * grid.radius * Vec(-n[1], n[0], 0));
-    vhandle[1] = f.getMesh().add_vertex(point + 3 * grid.radius * Vec(0, -n[2], n[1]));
-    vhandle[2] = f.getMesh().add_vertex(point + 3 * grid.radius * Vec(n[2], 0, -n[0]));
 
     f.getMesh().add_face({vhandle[0], vhandle[1], vhandle[2]});
+    f.getMesh().add_face({vhandle[1], vhandle[0], vhandle[3]});
 
     if (!OpenMesh::IO::write_mesh(f.getMesh(), ASSETS_DIR "/out.ply")) {
         std::cerr << "write error\n";
         exit(1);
     }
-//    std::cout << grid.bb << std::endl << grid << std::endl;
 
-//    std::cout << grid.size3 << std::endl;
-//    for (int i = 0; i < grid.size3; i++) {
-//        if (counts[i] > 0) {
-//            values[i] /= counts[i];
-//        }
-//    }
-//    double max = 0;
-//    for (int i = 0; i < grid.size3; i++) {
-//        if (values[i] > -1) {
-//            std::cout << values[i] / (2 * grid.size2 * 2 * grid.size2) << " ";
-//            if (i % 50 == 0) {
-//                std::cout << std::endl;
-//            }
-//        }
-//    }
 
     std::cout << std::endl << maxP << std::endl << max << std::endl;
     counts.resize(0);
