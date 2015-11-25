@@ -1,17 +1,15 @@
-#include <iostream>
-#include <array>
-#include <random>
-//#include <factory/mesh_factory.h>
-
+#include <chrono>
 #include "common/common.h"
 #include "bounding_box.h"
-#include "spherical_coordinate_system.h"
+#include "demo/gedt_showcase.h"
 #include "gedt/octree.h"
 #include "gedt/gedt.h"
 #include "prst/prst.h"
 
 using std::array;
 using std::list;
+using std::chrono::high_resolution_clock;
+using std::chrono::milliseconds;
 
 int main() {
 
@@ -20,18 +18,31 @@ int main() {
         std::cerr << "read error\n";
         exit(1);
     }
-//
-//    BoundingBox::centerMeshVertices(mesh);
-//    BoundingBox d(mesh);
-////    std::cout << d.getCenter() << std::endl;
-//
+
+    std::cout << "Computing GEDT..." << std::endl;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
     list<Mesh::FaceHandle> faces;
     std::copy(mesh.faces_begin(), mesh.faces_end(), std::back_inserter(faces));
-
     GEDT gedt(mesh, OCTREE_DEPTH);
 
-    std::cout << "lol" << std::endl;
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<milliseconds>(t2 - t1).count();
+    std::cout << "GEDT computed in " << float(duration) / 1000 << " seconds." << std::endl << std::endl;
+
+
+    std::cout << "Computing PRST..." << std::endl;
+    t1 = high_resolution_clock::now();
+
     PRST prst(gedt);
+
+    t2 = high_resolution_clock::now();
+    duration = std::chrono::duration_cast<milliseconds>(t2 - t1).count();
+    std::cout << "PRST computed in " << float(duration) / 1000 << " seconds." << std::endl << std::endl;
+
+    std::cout << "Displaying the GEDT on planes z=a, press on a button ton increse a" << std::endl;
+    GEDTShowcase::displaySlices(gedt);
+
 //    std::cout << std::endl << gedt.getPointsOfInterest().size();
 //    vector<double> v(64 * 64 * 64, 1.0);
 //

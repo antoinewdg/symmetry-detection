@@ -7,8 +7,7 @@
 
 
 #include <utility>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+
 #include <bounding_box.h>
 #include "common/common.h"
 #include "octree.h"
@@ -20,7 +19,6 @@
 
 
 class GEDT {
-    typedef std::pair<Vec3i, Vec3i> Pair;
 public:
     GEDT(Mesh &mesh, int treeDepth);
 
@@ -29,8 +27,8 @@ public:
         return values(grid.coordsFromPoint(p));
     }
 
-    inline double normalized(const Vec &p) const {
-        return (*this)(p) / norm;
+    inline double operator()(const Vec3i &c) const {
+        return values(c);
     }
 
 private:
@@ -38,7 +36,6 @@ private:
     BoundingBox boundingBox;
 
     Tensord values;
-    cv::Mat image;
     OCTree tree;
     const Grid &grid;
     list<Vec3i> seeds;
@@ -52,8 +49,6 @@ private:
     void regionGrowth(const Vec3i &c, const Vec3i &seed, double maxD2, double sigma2);
 
     void initializeSeeds();
-
-    double computeNorm();
 
     bool areCoordsInGrid(Vec3i c) {
         return c[0] >= 0 && c[0] < grid.size &&

@@ -33,29 +33,31 @@ PRST::PRST(const GEDT &f) :
     /* TODO Move somewhere else */
 //
     Mesh::VertexHandle vhandle[4];
+////
+//    Vec n, point;
+//    std::cout << maxP << std::endl << std::endl;
+//    maxP.toCartesian(n, point);
+//    std::cout << "n:" << n << " p:" << point << std::endl;
+//    Vec A = grid.bb.getMin(),
+//            B = grid.bb.getMax(),
+//            C = Vec(grid.bb.getMax()[0], grid.bb.getMin()[1], grid.bb.getMin()[2]),
+//            D = Vec(grid.bb.getMin()[0], grid.bb.getMax()[1], grid.bb.getMax()[2]);
+////
+//    vhandle[0] = f.getMesh().add_vertex(Mesh::Point(0, 0, 0));//Plane::projectPointOnCartesianPlane(A, n, point));
+//    vhandle[1] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(B, n, point));
+//    vhandle[2] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(C, n, point));
+//    vhandle[3] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(D, n, point));
 //
-    Vec n, point;
-    maxP.toCartesian(n, point);
-    Vec A = grid.bb.getMin(),
-            B = grid.bb.getMax(),
-            C = Vec(grid.bb.getMax()[0], grid.bb.getMin()[1], grid.bb.getMin()[2]),
-            D = Vec(grid.bb.getMin()[0], grid.bb.getMax()[1], grid.bb.getMax()[2]);
-
-    vhandle[0] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(A, n, point));
-    vhandle[1] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(B, n, point));
-    vhandle[2] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(C, n, point));
-    vhandle[3] = f.getMesh().add_vertex(Plane::projectPointOnCartesianPlane(D, n, point));
+//
+//    f.getMesh().add_face({vhandle[0], vhandle[1], vhandle[2]});
+//    f.getMesh().add_face({vhandle[1], vhandle[0], vhandle[3]});
+//
+//    if (!OpenMesh::IO::write_mesh(f.getMesh(), ASSETS_DIR "/out.ply")) {
+//        std::cerr << "write error\n";
+//        exit(1);
+//    }
 
 
-    f.getMesh().add_face({vhandle[0], vhandle[1], vhandle[2]});
-    f.getMesh().add_face({vhandle[1], vhandle[0], vhandle[3]});
-
-    if (!OpenMesh::IO::write_mesh(f.getMesh(), ASSETS_DIR "/out.ply")) {
-        std::cerr << "write error\n";
-        exit(1);
-    }
-
-
-    std::cout << std::endl << maxP << std::endl << max << std::endl;
+//    std::cout << std::endl << maxP << std::endl << max << std::endl;
     counts.resize(0);
 }

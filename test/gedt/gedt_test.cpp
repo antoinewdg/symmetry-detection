@@ -8,7 +8,7 @@ TEST(GEDT, ConstructsCorrectly) {
 
     for (float x = -0.5f; x <= 0.5f; x += (1.f / 3)) {
         for (float y = -0.5f; y <= 0.5f; y += (1.f / 3)) {
-//            std::cout << f(Vec(x, y, 0.5)) << " ";
+//            std::cout << f(Vec(x, y, 0)) << " ";
             for (float z = -0.5f; z <= 0.5f; z += (1.f / 3)) {
 //                std::cout << f(Vec(x, y, z)) << " ";
                 ASSERT_LE(f(Vec(x, y, z)), 1.0);

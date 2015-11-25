@@ -26,9 +26,9 @@ GEDT::GEDT(Mesh &mesh, int treeDepth) :
 //
 //    std::cout << image;
 //    cv::imshow("dd", image);
-//
-//    cv::convertScaleAbs(image, image, 255);
-//    cv::imwrite(ASSETS_DIR "/tea.jpg", image);
+////
+////    cv::convertScaleAbs(image, image, 255);
+////    cv::imwrite(ASSETS_DIR "/tea.jpg", image);
 //    cv::waitKey();
 }
 
@@ -65,11 +65,3 @@ void GEDT::regionGrowth(const Vec3i &c, const Vec3i &seed, double maxD2, double 
 }
 
 
-double GEDT::computeNorm() {
-    double V = grid.getVoxelVolume(), n = 0;
-    for (double d : values.getData()) {
-        n += d;
-    }
-    return n / V;
-
-}
