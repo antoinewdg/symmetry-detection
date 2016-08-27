@@ -9,7 +9,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/test/test_util")
 file(GLOB_RECURSE source_files src/*.cpp)
 list(REMOVE_ITEM source_files ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 file(GLOB_RECURSE header_files include/*.h)
-add_executable(main src/main.cpp ${source_files} ${header_files})
+add_executable(main src/main.cpp ${source_files} ${header_files} include/prst/maxima.h)
 
 
 

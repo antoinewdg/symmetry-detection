@@ -21,7 +21,6 @@ private:
     double radius;
     double rStep, thetaStep, phiStep;
 
-
 public:
     void setRadius(double radius) {
         SphericalCoordinateSystem::radius = radius;
